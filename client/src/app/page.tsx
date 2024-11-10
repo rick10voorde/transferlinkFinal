@@ -1,108 +1,109 @@
-import Link from 'next/link';
-import { ArrowRight, Globe, Shield, TrendingUp } from 'lucide-react';
+// src/app/page.tsx
+'use client';
+
+import Image from 'next/image';
+import { UserButton, SignInButton, SignUpButton, useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  return (
-    <div className="min-h-screen bg-white font-['Figtree']">
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-24">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center space-y-6 mb-16">
-            <h1 className="text-6xl font-normal tracking-tight text-black">
-              transfer<span className="text-[#52AEA3]">link</span>
-            </h1>
-            <p className="text-xl text-black max-w-2xl mx-auto">
-              Connect with professional football clubs and agents worldwide. 
-              Streamline your transfer process with our advanced platform.
-            </p>
-            <div className="flex justify-center gap-4 pt-4">
-              <Link 
-                href="/sign-in" 
-                className="group inline-flex items-center px-6 py-3 text-sm text-white bg-[#52AEA3] rounded-lg hover:bg-[#489992] transition-all duration-200"
-              >
-                Get Started 
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"/>
-              </Link>
-              <Link 
-                href="/sign-up" 
-                className="inline-flex items-center px-6 py-3 text-sm text-[#52AEA3] border border-[#52AEA3] rounded-lg hover:bg-[#52AEA3] hover:text-white transition-all duration-200"
-              >
-                Sign Up
-              </Link>
-            </div>
-          </div>
+  const { isSignedIn } = useUser();
+  const router = useRouter();
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto">
-            <div className="text-center p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-200">
-              <div className="text-black font-normal mb-2">Jobs</div>
-              <div className="text-4xl font-light">
-                <span className="text-black">100</span>
-                <span className="text-[#52AEA3]">+</span>
-              </div>
-            </div>
-            <div className="text-center p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-200">
-              <div className="text-black font-normal mb-2">Agents</div>
-              <div className="text-4xl font-light">
-                <span className="text-black">500</span>
-                <span className="text-[#52AEA3]">+</span>
-              </div>
-            </div>
-            <div className="text-center p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-200">
-              <div className="text-black font-normal mb-2">Players</div>
-              <div className="text-4xl font-light">
-                <span className="text-black">1k</span>
-                <span className="text-[#52AEA3]">+</span>
-              </div>
+  return (
+    <div className="flex flex-col">
+      {/* Hero Section */}
+      <section className="bg-white">
+        <div className="container px-6 py-16 mx-auto text-center">
+          <div className="max-w-2xl mx-auto">
+            <h1 className="text-3xl font-bold text-gray-800 md:text-4xl lg:text-5xl">
+              The Professional Platform for Football Transfers
+            </h1>
+            <p className="mt-6 text-gray-500">
+              Connect with clubs, agents, and players worldwide. Find the perfect match for your team or career.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+              {!isSignedIn ? (
+                <>
+                  <SignUpButton mode="modal">
+                    <button className="btn btn-primary">Get Started</button>
+                  </SignUpButton>
+                  <SignInButton mode="modal">
+                    <button className="btn btn-outline">Sign In</button>
+                  </SignInButton>
+                </>
+              ) : (
+                <button 
+                  onClick={() => router.push('/dashboard')} 
+                  className="btn btn-primary"
+                >
+                  Go to Dashboard
+                </button>
+              )}
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="bg-gray-50 py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-normal text-black text-center mb-16">
-              Why choose transferlink?
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-              <div className="group p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-200">
-                <Globe className="w-10 h-10 text-[#52AEA3] mb-4 group-hover:scale-110 transition-transform"/>
-                <h3 className="text-xl font-normal text-black mb-2">Global Network</h3>
-                <p className="text-black">Connect with clubs and agents worldwide through our extensive network.</p>
-              </div>
-              <div className="group p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-200">
-                <Shield className="w-10 h-10 text-[#52AEA3] mb-4 group-hover:scale-110 transition-transform"/>
-                <h3 className="text-xl font-normal text-black mb-2">Secure Platform</h3>
-                <p className="text-black">Your data is protected with enterprise-grade security measures.</p>
-              </div>
-              <div className="group p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-200">
-                <TrendingUp className="w-10 h-10 text-[#52AEA3] mb-4 group-hover:scale-110 transition-transform"/>
-                <h3 className="text-xl font-normal text-black mb-2">Market Insights</h3>
-                <p className="text-black">Access real-time market data and transfer analytics.</p>
-              </div>
+      <section className="bg-gray-50">
+        <div className="container px-6 py-16 mx-auto">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {/* For Clubs */}
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold text-gray-800">For Clubs</h3>
+              <p className="mt-4 text-gray-600">
+                Post vacancies, discover talent, and connect with qualified agents.
+              </p>
+            </div>
+
+            {/* For Agents */}
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold text-gray-800">For Agents</h3>
+              <p className="mt-4 text-gray-600">
+                Represent players, manage profiles, and negotiate deals efficiently.
+              </p>
+            </div>
+
+            {/* For Players */}
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold text-gray-800">For Players</h3>
+              <p className="mt-4 text-gray-600">
+                Create your profile, showcase your talent, and find opportunities.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="container mx-auto px-4 py-24">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-normal text-black mb-6">
-            Ready to transform your transfer process?
-          </h2>
-          <p className="text-xl text-black mb-8">
-            Join the most efficient platform for professional football transfers.
-          </p>
-          <Link 
-            href="/sign-up" 
-            className="inline-flex items-center px-8 py-4 text-sm text-white bg-[#52AEA3] rounded-lg hover:bg-[#489992] transition-all duration-200"
-          >
-            Get Started Now
-            <ArrowRight className="ml-2 w-4 h-4"/>
-          </Link>
+      {/* How it Works Section */}
+      <section className="bg-white">
+        <div className="container px-6 py-16 mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-800">How It Works</h2>
+          <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-3">
+            <div>
+              <div className="flex items-center justify-center w-16 h-16 mx-auto bg-primary rounded-full">
+                <span className="text-xl text-white">1</span>
+              </div>
+              <h3 className="mt-4 text-xl font-semibold text-gray-800">Create Profile</h3>
+              <p className="mt-2 text-gray-600">Sign up and complete your profile with relevant information.</p>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-center w-16 h-16 mx-auto bg-primary rounded-full">
+                <span className="text-xl text-white">2</span>
+              </div>
+              <h3 className="mt-4 text-xl font-semibold text-gray-800">Connect</h3>
+              <p className="mt-2 text-gray-600">Find and connect with relevant parties in the football industry.</p>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-center w-16 h-16 mx-auto bg-primary rounded-full">
+                <span className="text-xl text-white">3</span>
+              </div>
+              <h3 className="mt-4 text-xl font-semibold text-gray-800">Succeed</h3>
+              <p className="mt-2 text-gray-600">Close deals and advance your career or team.</p>
+            </div>
+          </div>
         </div>
       </section>
     </div>

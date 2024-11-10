@@ -1,8 +1,8 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
 import { ClerkProvider } from '@clerk/nextjs';
 import { Figtree } from 'next/font/google';
 import localFont from "next/font/local";
-import Navbar from '@/components/layout/Navbar';
 import "./globals.css";
 
 const figtree = Figtree({ 
@@ -38,10 +38,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${figtree.variable} font-sans antialiased min-h-screen flex flex-col`}
         >
-          <Navbar />
-          <main className="flex-1 pt-16">
-            {children}
-          </main>
+          {children}
         </body>
       </html>
     </ClerkProvider>
